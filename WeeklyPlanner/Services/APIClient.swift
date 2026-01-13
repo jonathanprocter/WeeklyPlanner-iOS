@@ -84,6 +84,10 @@ class APIClient {
         encoder.dateEncodingStrategy = .iso8601
     }
 
+    func decode<T: Decodable>(_ type: T.Type, from data: Data) throws -> T {
+        try decoder.decode(T.self, from: data)
+    }
+
     // MARK: - Generic Request Helper
 
     private func request<T: Decodable>(

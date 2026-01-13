@@ -6,6 +6,15 @@ options:
   xcodeVersion: "15.0"
   generateEmptyDirectories: true
 
+schemes:
+  WeeklyPlanner:
+    build:
+      targets:
+        WeeklyPlanner: all
+    test:
+      targets:
+        - WeeklyPlannerTests
+
 settings:
   base:
     SWIFT_VERSION: "5.9"
@@ -47,3 +56,14 @@ targets:
               - "com.jonathanprocter.weeklyplanner"
         NSMicrophoneUsageDescription: "Weekly Planner needs microphone access to record voice notes during client sessions."
         NSSpeechRecognitionUsageDescription: "Weekly Planner uses speech recognition to transcribe your voice notes into text."
+
+  WeeklyPlannerTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: WeeklyPlannerTests
+    dependencies:
+      - target: WeeklyPlanner
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES

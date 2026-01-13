@@ -144,8 +144,8 @@ class SpeechRecognitionService: ObservableObject {
         // Stop audio engine
         if audioEngine.isRunning {
             audioEngine.stop()
-            audioEngine.inputNode.removeTap(onBus: 0)
         }
+        audioEngine.inputNode.removeTap(onBus: 0)
 
         // End recognition request
         recognitionRequest?.endAudio()

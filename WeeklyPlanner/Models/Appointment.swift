@@ -60,10 +60,20 @@ struct Appointment: Codable, Identifiable, Equatable {
         client?.name
     }
 
-    var date: String {
+    private static let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
-        return formatter.string(from: scheduledAt)
+        return formatter
+    }()
+
+    private static let timeFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.timeStyle = .short
+        return formatter
+    }()
+
+    var date: String {
+        Self.dateFormatter.string(from: scheduledAt)
     }
 
     var startTime: Date {
@@ -75,15 +85,11 @@ struct Appointment: Codable, Identifiable, Equatable {
     }
 
     var startTimeFormatted: String {
-        let formatter = DateFormatter()
-        formatter.timeStyle = .short
-        return formatter.string(from: scheduledAt)
+        Self.timeFormatter.string(from: scheduledAt)
     }
 
     var endTimeFormatted: String {
-        let formatter = DateFormatter()
-        formatter.timeStyle = .short
-        return formatter.string(from: endTime)
+        Self.timeFormatter.string(from: endTime)
     }
 
     var durationFormatted: String {

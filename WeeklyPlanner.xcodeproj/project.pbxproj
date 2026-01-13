@@ -11,6 +11,7 @@
 		053AE20F4587943C8A9DEAEF /* DailyDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 762BEF0CF13829F06A8C262E /* DailyDetailView.swift */; };
 		0702B493FE8A84FF487DBF6F /* GoogleCalendarSyncView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AFDFFF4A98354E770FC8CBC /* GoogleCalendarSyncView.swift */; };
 		07F89CA073273CE45497FF61 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 687ECD15903D15CA5D88D882 /* Assets.xcassets */; };
+		105363F7C324D71D354113B0 /* DateExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 896C9C8BBFE224784174E129 /* DateExtensionsTests.swift */; };
 		1B036E42B80F4DC727995801 /* CalendarSyncViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 137AE039DB88822817B11521 /* CalendarSyncViewModel.swift */; };
 		242518314FC7522FBC901474 /* ElevenLabsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520B81E9DDE0A649B22189D3 /* ElevenLabsService.swift */; };
 		27FD87EB81140F8FFBF0B357 /* QuickDictationOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 212FBA85152BB0BBFCD9746D /* QuickDictationOverlay.swift */; };
@@ -40,6 +41,7 @@
 		97F66485E730B9FEE091FD19 /* AppointmentDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 919EA486578A7D9414B0A5DE /* AppointmentDetailView.swift */; };
 		9AD375061A80E259FE11A5CD /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D9617343C9B09E96190DEB6 /* APIClient.swift */; };
 		A0A704C489A0B1C7415A278A /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE2276F258A105099AC26E6F /* User.swift */; };
+		A127F568A3801EDCD041D531 /* WeeklyPlannerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6CEBB1A7B0EC62599ED4FA /* WeeklyPlannerTests.swift */; };
 		A4EF5A45F1B0C1AC15246F66 /* DailySummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE1956906BA93EA035F0752 /* DailySummary.swift */; };
 		B0F675973AB83972F3B6D916 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECA95CD8FEFF4BDEE981E1E1 /* MainTabView.swift */; };
 		B3132FC2C6B011C7FAFC51FD /* SessionPrepViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C2DF612AC208418241F38F0 /* SessionPrepViewModel.swift */; };
@@ -53,7 +55,18 @@
 		DBA2F4952CD8A3CC56854E11 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36B30DD0A86DFE9FA042318C /* SettingsView.swift */; };
 		DE67448F66887C615E21689C /* SpeechRecognitionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFF292860E870D25F1425051 /* SpeechRecognitionService.swift */; };
 		F82231AD626AD7E5CBCA4C63 /* KeychainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32DE1D812C4C3F062B6F5F27 /* KeychainService.swift */; };
+		FFAB65C1B0E0608520F8049E /* APIClientDateParsingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2B3370DBAACD596EAC111BB /* APIClientDateParsingTests.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		CDB2F6B973AAB0986868F243 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B6291442D89087FD1ADBB647 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 80200A8C9FF44A67315EC698;
+			remoteInfo = WeeklyPlanner;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		03F5BBE5500933E96EE542DC /* SessionNoteFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionNoteFormView.swift; sourceTree = "<group>"; };
@@ -69,6 +82,7 @@
 		51A88772FAB6B65102F593A3 /* DailySummarySheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailySummarySheet.swift; sourceTree = "<group>"; };
 		520B81E9DDE0A649B22189D3 /* ElevenLabsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElevenLabsService.swift; sourceTree = "<group>"; };
 		66468AB75124AADEE267AB08 /* GoogleCalendar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleCalendar.swift; sourceTree = "<group>"; };
+		67A1A4A5966EE2C1BBA02464 /* WeeklyPlannerTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = WeeklyPlannerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		687ECD15903D15CA5D88D882 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6AFDFFF4A98354E770FC8CBC /* GoogleCalendarSyncView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleCalendarSyncView.swift; sourceTree = "<group>"; };
 		6D5E2724BACE32FCA6DAE4C7 /* SessionNote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionNote.swift; sourceTree = "<group>"; };
@@ -79,6 +93,7 @@
 		85B61EC5D550A3E2356B7D71 /* DailyNote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyNote.swift; sourceTree = "<group>"; };
 		88506E5CD2C5EF871CEB024D /* VoiceAssistantView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceAssistantView.swift; sourceTree = "<group>"; };
 		88530FEFA7A2ABAF368B7072 /* WeeklyPlannerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyPlannerApp.swift; sourceTree = "<group>"; };
+		896C9C8BBFE224784174E129 /* DateExtensionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtensionsTests.swift; sourceTree = "<group>"; };
 		8B5A39BECAF02AAF2C60D540 /* WeeklyGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyGridView.swift; sourceTree = "<group>"; };
 		8C2DF612AC208418241F38F0 /* SessionPrepViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionPrepViewModel.swift; sourceTree = "<group>"; };
 		8D9617343C9B09E96190DEB6 /* APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
@@ -98,9 +113,11 @@
 		E6DD20815D63DE6B814DEB72 /* AppointmentListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppointmentListView.swift; sourceTree = "<group>"; };
 		E9EDC9D27ECE36C876E0CC46 /* AppointmentCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppointmentCardView.swift; sourceTree = "<group>"; };
 		ECA95CD8FEFF4BDEE981E1E1 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
+		F2B3370DBAACD596EAC111BB /* APIClientDateParsingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClientDateParsingTests.swift; sourceTree = "<group>"; };
 		F3056A3D46AA0C3709B5B8C9 /* WeeklyPlanner.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = WeeklyPlanner.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F58E668BEB2E38FE877E78B8 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		F80A43B516BBEEB02E4223F7 /* AppointmentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppointmentViewModel.swift; sourceTree = "<group>"; };
+		FA6CEBB1A7B0EC62599ED4FA /* WeeklyPlannerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyPlannerTests.swift; sourceTree = "<group>"; };
 		FE2276F258A105099AC26E6F /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		FFF292860E870D25F1425051 /* SpeechRecognitionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechRecognitionService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -155,10 +172,21 @@
 			path = SessionPrep;
 			sourceTree = "<group>";
 		};
+		83B0624CF01D8DA6518F24F4 /* WeeklyPlannerTests */ = {
+			isa = PBXGroup;
+			children = (
+				F2B3370DBAACD596EAC111BB /* APIClientDateParsingTests.swift */,
+				896C9C8BBFE224784174E129 /* DateExtensionsTests.swift */,
+				FA6CEBB1A7B0EC62599ED4FA /* WeeklyPlannerTests.swift */,
+			);
+			path = WeeklyPlannerTests;
+			sourceTree = "<group>";
+		};
 		8E157D6CD92666456C7638CC = {
 			isa = PBXGroup;
 			children = (
 				F5F747AAE3F710915F171908 /* WeeklyPlanner */,
+				83B0624CF01D8DA6518F24F4 /* WeeklyPlannerTests */,
 				A176BCA160D7781438988CD1 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -206,6 +234,7 @@
 			isa = PBXGroup;
 			children = (
 				F3056A3D46AA0C3709B5B8C9 /* WeeklyPlanner.app */,
+				67A1A4A5966EE2C1BBA02464 /* WeeklyPlannerTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -282,6 +311,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		5AEDEB44C6AAC2685DD547D3 /* WeeklyPlannerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AB174D810917021BDCC41625 /* Build configuration list for PBXNativeTarget "WeeklyPlannerTests" */;
+			buildPhases = (
+				358CF4BFFE295B7561D96906 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				5742CB4839BB0C08659E023D /* PBXTargetDependency */,
+			);
+			name = WeeklyPlannerTests;
+			packageProductDependencies = (
+			);
+			productName = WeeklyPlannerTests;
+			productReference = 67A1A4A5966EE2C1BBA02464 /* WeeklyPlannerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		80200A8C9FF44A67315EC698 /* WeeklyPlanner */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 89B9EA6865342A5011510112 /* Build configuration list for PBXNativeTarget "WeeklyPlanner" */;
@@ -330,6 +377,7 @@
 			projectRoot = "";
 			targets = (
 				80200A8C9FF44A67315EC698 /* WeeklyPlanner */,
+				5AEDEB44C6AAC2685DD547D3 /* WeeklyPlannerTests */,
 			);
 		};
 /* End PBXProject section */
@@ -346,6 +394,16 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		358CF4BFFE295B7561D96906 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FFAB65C1B0E0608520F8049E /* APIClientDateParsingTests.swift in Sources */,
+				105363F7C324D71D354113B0 /* DateExtensionsTests.swift in Sources */,
+				A127F568A3801EDCD041D531 /* WeeklyPlannerTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B1485676576EB99875445822 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -400,7 +458,32 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		5742CB4839BB0C08659E023D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 80200A8C9FF44A67315EC698 /* WeeklyPlanner */;
+			targetProxy = CDB2F6B973AAB0986868F243 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		06336A03944656EB57314D3A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.jonathanprocter.WeeklyPlannerTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WeeklyPlanner.app/WeeklyPlanner";
+			};
+			name = Debug;
+		};
 		1399E62DD359E4634BB606EB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -544,6 +627,23 @@
 			};
 			name = Debug;
 		};
+		97247AAEEBCB3C89A5A13F76 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.jonathanprocter.WeeklyPlannerTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WeeklyPlanner.app/WeeklyPlanner";
+			};
+			name = Release;
+		};
 		D9538D198BFFE626405002B7 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -579,6 +679,15 @@
 			buildConfigurations = (
 				1399E62DD359E4634BB606EB /* Debug */,
 				D9538D198BFFE626405002B7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		AB174D810917021BDCC41625 /* Build configuration list for PBXNativeTarget "WeeklyPlannerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				06336A03944656EB57314D3A /* Debug */,
+				97247AAEEBCB3C89A5A13F76 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

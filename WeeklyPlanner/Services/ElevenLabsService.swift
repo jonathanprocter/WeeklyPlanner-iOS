@@ -57,6 +57,7 @@ class ElevenLabsService: ObservableObject {
 
     private let baseURL = "https://api.elevenlabs.io/v1"
     private var audioPlayer: AVAudioPlayer?
+    private let systemSpeechSynthesizer = AVSpeechSynthesizer()
     private let keychain = KeychainService.shared
 
     // MARK: - Configuration
@@ -214,17 +215,17 @@ class ElevenLabsService: ObservableObject {
     func stopSpeaking() {
         audioPlayer?.stop()
         audioPlayer = nil
+        systemSpeechSynthesizer.stopSpeaking(at: .immediate)
         isSpeaking = false
     }
 
     // MARK: - Fallback to System Voice
 
     func speakWithSystemVoice(_ text: String) {
-        let synthesizer = AVSpeechSynthesizer()
         let utterance = AVSpeechUtterance(string: text)
         utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
         utterance.rate = AVSpeechUtteranceDefaultSpeechRate
-        synthesizer.speak(utterance)
+        systemSpeechSynthesizer.speak(utterance)
     }
 }
 
