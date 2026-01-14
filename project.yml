@@ -50,6 +50,7 @@ targets:
           - UIInterfaceOrientationPortrait
           - UIInterfaceOrientationLandscapeLeft
           - UIInterfaceOrientationLandscapeRight
+          - UIInterfaceOrientationPortraitUpsideDown
         CFBundleURLTypes:
           - CFBundleURLName: "Google OAuth"
             CFBundleURLSchemes:
