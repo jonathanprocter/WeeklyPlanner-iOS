@@ -12,6 +12,8 @@ struct QuickDictationOverlay: View {
     @State private var showingAIProcessing = false
     @State private var selectedPriority: ReminderPriority = .medium
     @State private var selectedCategory: ReminderCategory = .sessionFollowUp
+    @State private var showingSavedAlert = false
+    @State private var savedMessage = "Voice note saved."
 
     var body: some View {
         NavigationStack {
@@ -58,6 +60,14 @@ struct QuickDictationOverlay: View {
                 }
             } message: {
                 Text(viewModel.error ?? "An error occurred")
+            }
+            .alert("Saved", isPresented: $showingSavedAlert) {
+                Button("OK") {
+                    onDismiss?()
+                    dismiss()
+                }
+            } message: {
+                Text(savedMessage)
             }
         }
     }
@@ -340,11 +350,13 @@ struct QuickDictationOverlay: View {
 
     private func saveWithoutProcessing() {
         do {
-            var reminder = try viewModel.saveWithoutProcessing()
-            reminder.priority = selectedPriority
-            reminder.aiSuggestedCategory = selectedCategory
+            let reminder = try viewModel.saveWithoutProcessing(
+                priorityOverride: selectedPriority,
+                categoryOverride: selectedCategory
+            )
             onSaved?(reminder)
-            dismiss()
+            savedMessage = "Voice note saved\(client.map { " for \($0.name)" } ?? "")."
+            showingSavedAlert = true
         } catch {
             viewModel.error = error.localizedDescription
         }
@@ -353,10 +365,13 @@ struct QuickDictationOverlay: View {
     private func saveWithProcessing() {
         Task {
             do {
-                var reminder = try await viewModel.processAndSave()
-                reminder.priority = selectedPriority
+                let reminder = try await viewModel.processAndSave(
+                    priorityOverride: selectedPriority,
+                    categoryOverride: selectedCategory
+                )
                 onSaved?(reminder)
-                dismiss()
+                savedMessage = "Voice note saved\(client.map { " for \($0.name)" } ?? "")."
+                showingSavedAlert = true
             } catch {
                 viewModel.error = error.localizedDescription
             }

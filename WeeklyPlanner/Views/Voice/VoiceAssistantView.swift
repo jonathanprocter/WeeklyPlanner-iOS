@@ -323,6 +323,8 @@ struct VoiceAssistantSettingsView: View {
     @StateObject private var elevenLabsService = ElevenLabsService()
     @State private var selectedVoiceId: String = ""
     @State private var isLoadingVoices = false
+    @AppStorage("voiceAssistantBargeInEnabled") private var bargeInEnabled = false
+    @AppStorage("voiceAssistantConversationModeEnabled") private var conversationModeEnabled = false
 
     var body: some View {
         NavigationStack {
@@ -375,6 +377,11 @@ struct VoiceAssistantSettingsView: View {
                             .font(.caption)
                             .foregroundColor(.secondary)
                     }
+                }
+
+                Section("Conversation") {
+                    Toggle("Barge-In (Interruptible)", isOn: $bargeInEnabled)
+                    Toggle("Continuous Conversation Mode", isOn: $conversationModeEnabled)
                 }
             }
             .navigationTitle("Voice Settings")

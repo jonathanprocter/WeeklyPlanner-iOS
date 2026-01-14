@@ -20,6 +20,9 @@ class VoiceAssistantService: ObservableObject {
     // Conversation context
     private var conversationContext = ConversationContext()
 
+    private let bargeInKey = "voiceAssistantBargeInEnabled"
+    private let conversationModeKey = "voiceAssistantConversationModeEnabled"
+
     private var cancellables = Set<AnyCancellable>()
 
     init(apiClient: APIClient? = nil) {
@@ -52,6 +55,10 @@ class VoiceAssistantService: ObservableObject {
 
     func startListening() async {
         error = nil
+
+        if UserDefaults.standard.bool(forKey: bargeInKey) {
+            stopSpeaking()
+        }
 
         do {
             try await speechService.startRecording()
@@ -88,7 +95,10 @@ class VoiceAssistantService: ObservableObject {
 
         do {
             // Parse intent
-            let intent = try await aiService.parseIntent(from: text, context: conversationContext)
+            var intent = try await aiService.parseIntent(from: text, context: conversationContext)
+            if intent.timeReference == nil {
+                intent.timeReference = inferTimeReference(from: text)
+            }
 
             // Execute the intent and get data
             let data = await executeIntent(intent)
@@ -114,6 +124,10 @@ class VoiceAssistantService: ObservableObject {
             // Speak the response
             await speakResponse(responseText)
 
+            if UserDefaults.standard.bool(forKey: conversationModeKey), isAuthorized {
+                await startListening()
+            }
+
         } catch {
             let errorMessage = "I'm sorry, I encountered an error: \(error.localizedDescription)"
             let errorResponse = ConversationMessage(role: .assistant, content: errorMessage)
@@ -135,7 +149,7 @@ class VoiceAssistantService: ObservableObject {
 
         case .queryClientHistory:
             if let clientName = intent.entityName {
-                return await fetchClientByName(clientName, apiClient: apiClient)
+                return await fetchClientHistory(for: clientName, apiClient: apiClient)
             }
             return nil
 
@@ -162,10 +176,10 @@ class VoiceAssistantService: ObservableObject {
             return nil
 
         case .getSchedule:
-            return await fetchTodaySchedule(apiClient)
+            return await fetchSchedule(apiClient, timeReference: intent.timeReference)
 
         case .getDailySummary:
-            return await fetchDailySummary(apiClient)
+            return await fetchSchedule(apiClient, timeReference: intent.timeReference)
 
         case .getClientInfo:
             if let clientName = intent.entityName {
@@ -194,20 +208,7 @@ class VoiceAssistantService: ObservableObject {
     }
 
     private func fetchTodaySchedule(_ apiClient: APIClient) async -> [Appointment]? {
-        do {
-            let appointments = try await apiClient.getAllAppointments()
-            let today = Calendar.current.startOfDay(for: Date())
-            let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: today)!
-
-            let todayAppointments = appointments.filter { appointment in
-                appointment.scheduledAt >= today && appointment.scheduledAt < tomorrow
-            }
-            return todayAppointments.sorted { (a: Appointment, b: Appointment) in
-                a.scheduledAt < b.scheduledAt
-            }
-        } catch {
-            return nil
-        }
+        await fetchSchedule(apiClient, timeReference: TimeReference(type: .today))
     }
 
     private func fetchClientByName(_ name: String, apiClient: APIClient) async -> Client? {
@@ -249,6 +250,20 @@ class VoiceAssistantService: ObservableObject {
         }
     }
 
+    private func fetchClientHistory(for clientName: String, apiClient: APIClient) async -> [SessionNote]? {
+        do {
+            let clients = try await apiClient.getClients()
+            guard let client = clients.first(where: {
+                $0.name.localizedCaseInsensitiveContains(clientName)
+            }) else {
+                return nil
+            }
+            return try await apiClient.getSessionNotes(clientId: client.id, limit: 10)
+        } catch {
+            return nil
+        }
+    }
+
     private func fetchSessionPrep(for clientName: String, apiClient: APIClient) async -> SessionPrep? {
         do {
             let clients = try await apiClient.getClients()
@@ -278,7 +293,7 @@ class VoiceAssistantService: ObservableObject {
     }
 
     private func fetchDailySummary(_ apiClient: APIClient) async -> [Appointment]? {
-        return await fetchTodaySchedule(apiClient)
+        await fetchSchedule(apiClient, timeReference: TimeReference(type: .today))
     }
 
     // MARK: - Text to Speech
@@ -289,10 +304,10 @@ class VoiceAssistantService: ObservableObject {
                 try await elevenLabsService.speakText(text)
             } catch {
                 // Fallback to system voice
-                elevenLabsService.speakWithSystemVoice(text)
+                await elevenLabsService.speakWithSystemVoiceAsync(text)
             }
         } else {
-            elevenLabsService.speakWithSystemVoice(text)
+            await elevenLabsService.speakWithSystemVoiceAsync(text)
         }
     }
 
@@ -308,6 +323,82 @@ class VoiceAssistantService: ObservableObject {
         if let clientName = intent.entityName {
             conversationContext.currentClientName = clientName
         }
+    }
+
+    private func inferTimeReference(from text: String) -> TimeReference? {
+        let lowered = text.lowercased()
+        if lowered.contains("tomorrow") {
+            return TimeReference(type: .tomorrow)
+        }
+        if lowered.contains("today") {
+            return TimeReference(type: .today)
+        }
+        if lowered.contains("next week") {
+            return TimeReference(type: .nextWeek)
+        }
+        if lowered.contains("this week") {
+            return TimeReference(type: .thisWeek)
+        }
+        return nil
+    }
+
+    private func fetchSchedule(_ apiClient: APIClient, timeReference: TimeReference?) async -> [Appointment]? {
+        do {
+            let appointments = try await apiClient.getAllAppointments()
+            let (startDate, endDate) = scheduleDateRange(for: timeReference)
+
+            let filtered = appointments.filter { appointment in
+                appointment.scheduledAt >= startDate && appointment.scheduledAt < endDate
+            }
+            return filtered.sorted { (a: Appointment, b: Appointment) in
+                a.scheduledAt < b.scheduledAt
+            }
+        } catch {
+            return nil
+        }
+    }
+
+    private func scheduleDateRange(for timeReference: TimeReference?) -> (Date, Date) {
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
+
+        guard let timeReference else {
+            let tomorrow = calendar.date(byAdding: .day, value: 1, to: today) ?? today
+            return (today, tomorrow)
+        }
+
+        switch timeReference.type {
+        case .today:
+            let tomorrow = calendar.date(byAdding: .day, value: 1, to: today) ?? today
+            return (today, tomorrow)
+        case .tomorrow:
+            let start = calendar.date(byAdding: .day, value: 1, to: today) ?? today
+            let end = calendar.date(byAdding: .day, value: 2, to: today) ?? start
+            return (start, end)
+        case .thisWeek:
+            let start = Date().startOfWeek
+            let end = calendar.date(byAdding: .day, value: 7, to: start) ?? start
+            return (start, end)
+        case .nextWeek:
+            let start = calendar.date(byAdding: .day, value: 7, to: Date().startOfWeek) ?? today
+            let end = calendar.date(byAdding: .day, value: 7, to: start) ?? start
+            return (start, end)
+        case .specific:
+            if let date = timeReference.date {
+                let start = calendar.startOfDay(for: date)
+                let end = calendar.date(byAdding: .day, value: 1, to: start) ?? start
+                return (start, end)
+            }
+        case .range:
+            if let start = timeReference.startDate, let end = timeReference.endDate {
+                return (start, end)
+            }
+        case .relative, .lastSession:
+            break
+        }
+
+        let tomorrow = calendar.date(byAdding: .day, value: 1, to: today) ?? today
+        return (today, tomorrow)
     }
 
     func clearConversation() {

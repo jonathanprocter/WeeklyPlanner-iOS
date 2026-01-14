@@ -14,16 +14,15 @@ struct FloatingDictationButton: View {
             Spacer()
             HStack {
                 Spacer()
-
                 if isExpanded {
                     expandedView
                 } else {
                     collapsedButton
                 }
             }
-            .padding(.trailing, 16)
-            .padding(.bottom, 16)
+            Spacer()
         }
+        .padding(.trailing, 16)
         .sheet(isPresented: $showingOverlay) {
             QuickDictationOverlay(
                 viewModel: viewModel,

@@ -48,7 +48,7 @@ struct VoicesResponse: Codable {
 }
 
 @MainActor
-class ElevenLabsService: ObservableObject {
+class ElevenLabsService: NSObject, ObservableObject, AVSpeechSynthesizerDelegate {
     @Published var isSpeaking = false
     @Published var isProcessing = false
     @Published var selectedVoiceId: String = "21m00Tcm4TlvDq8ikWAM" // Rachel - default voice
@@ -58,7 +58,16 @@ class ElevenLabsService: ObservableObject {
     private let baseURL = "https://api.elevenlabs.io/v1"
     private var audioPlayer: AVAudioPlayer?
     private let systemSpeechSynthesizer = AVSpeechSynthesizer()
+    private var systemSpeechContinuation: CheckedContinuation<Void, Never>?
     private let keychain = KeychainService.shared
+
+    override init() {
+        super.init()
+        if let savedVoiceId = keychain.elevenLabsVoiceId, !savedVoiceId.isEmpty {
+            selectedVoiceId = savedVoiceId
+        }
+        systemSpeechSynthesizer.delegate = self
+    }
 
     // MARK: - Configuration
 
@@ -216,6 +225,8 @@ class ElevenLabsService: ObservableObject {
         audioPlayer?.stop()
         audioPlayer = nil
         systemSpeechSynthesizer.stopSpeaking(at: .immediate)
+        systemSpeechContinuation?.resume()
+        systemSpeechContinuation = nil
         isSpeaking = false
     }
 
@@ -225,7 +236,20 @@ class ElevenLabsService: ObservableObject {
         let utterance = AVSpeechUtterance(string: text)
         utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
         utterance.rate = AVSpeechUtteranceDefaultSpeechRate
+        isSpeaking = true
         systemSpeechSynthesizer.speak(utterance)
+    }
+
+    func speakWithSystemVoiceAsync(_ text: String) async {
+        systemSpeechSynthesizer.stopSpeaking(at: .immediate)
+        await withCheckedContinuation { continuation in
+            systemSpeechContinuation = continuation
+            let utterance = AVSpeechUtterance(string: text)
+            utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
+            utterance.rate = AVSpeechUtteranceDefaultSpeechRate
+            isSpeaking = true
+            systemSpeechSynthesizer.speak(utterance)
+        }
     }
 }
 
@@ -240,5 +264,15 @@ private class AudioPlayerDelegate: NSObject, AVAudioPlayerDelegate {
 
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         onFinish()
+    }
+}
+
+// MARK: - AVSpeechSynthesizerDelegate
+
+extension ElevenLabsService {
+    func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
+        systemSpeechContinuation?.resume()
+        systemSpeechContinuation = nil
+        isSpeaking = false
     }
 }

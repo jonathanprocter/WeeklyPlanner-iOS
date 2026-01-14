@@ -123,7 +123,7 @@ class VoiceDictationViewModel: ObservableObject {
 
     // MARK: - AI Processing
 
-    func processAndSave() async throws -> VoiceReminder {
+    func processAndSave(priorityOverride: ReminderPriority? = nil, categoryOverride: ReminderCategory? = nil) async throws -> VoiceReminder {
         guard var reminder = currentReminder else {
             throw NSError(domain: "VoiceDictation", code: 1, userInfo: [NSLocalizedDescriptionKey: "No reminder to process"])
         }
@@ -146,6 +146,13 @@ class VoiceDictationViewModel: ObservableObject {
             reminder.status = .ready
             reminder.processedAt = Date()
 
+            if let priorityOverride {
+                reminder.priority = priorityOverride
+            }
+            if let categoryOverride {
+                reminder.aiSuggestedCategory = categoryOverride
+            }
+
             currentReminder = reminder
 
             // Save locally
@@ -158,9 +165,16 @@ class VoiceDictationViewModel: ObservableObject {
         }
     }
 
-    func saveWithoutProcessing() throws -> VoiceReminder {
+    func saveWithoutProcessing(priorityOverride: ReminderPriority? = nil, categoryOverride: ReminderCategory? = nil) throws -> VoiceReminder {
         guard var reminder = currentReminder else {
             throw NSError(domain: "VoiceDictation", code: 1, userInfo: [NSLocalizedDescriptionKey: "No reminder to save"])
+        }
+
+        if let priorityOverride {
+            reminder.priority = priorityOverride
+        }
+        if let categoryOverride {
+            reminder.aiSuggestedCategory = categoryOverride
         }
 
         reminder.status = .transcribed
